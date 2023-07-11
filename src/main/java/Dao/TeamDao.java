@@ -69,7 +69,7 @@ import java.util.List;
         public void deleteTeam(String teamName) throws SQLException {
             String query = "DELETE FROM team_tb WHERE team_name = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, teamName);
+                statement.setString(1, teamName);
                 statement.executeUpdate();
             }
         }
@@ -89,4 +89,4 @@ import java.util.List;
         }
     }
 
-}
+
