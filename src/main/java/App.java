@@ -24,7 +24,7 @@ public class App {
             input = input;
         } else if (input.contains("?")) {
             response[0] = Arrays.toString(input.split("\\?"));
-            //response[0]은 사용자의 요구
+            //response[0]은 사용자의 요구 ex) 야구장등록
             rss = response[1].split("=");
             //rss[홀수]는 사용자의 입력사항 ex) 야구장이름 = 잠실야구장
 
@@ -34,14 +34,12 @@ public class App {
 
         try {
             if (input.equals("팀목록")) {
-                TeamService teamService = new TeamService();
-                teamService.팀목록();
-                List<TeamRespDTO> dtos = TeamRespDTO.dtos();
+                List<TeamRespDTO> dtos = TeamService.팀목록();
+                System.out.println(dtos);
             } else if (response[0].equals("야구장등록")) {
                 StadiumService stadiumService = new StadiumService();
                 stadiumService.야구장등록(rss[1]);
-                TeamService teamService = new TeamService();
-                teamService.팀목록();
+
 
             }
 
