@@ -57,7 +57,7 @@ import java.util.List;
 
         // 팀 이름 수정 - 쓸 일이 없을 거 같은데 혹시 몰라서 일단 살려두겠습니다
         public void updateTeam(String teamName, String newTeamName) throws SQLException {
-            String query = "UPDATE team_tb SET teamName = ?  WHERE teamName = ?";
+            String query = "UPDATE team_tb SET team_name = ?  WHERE team_name = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, newTeamName);
                 statement.setString(2, teamName);
