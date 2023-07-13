@@ -1,4 +1,5 @@
 import Dao.TeamDao;
+import Service.OutPlayerService;
 import Service.PlayerService;
 import db.DBConnection;
 import dto.TeamRespDTO;
@@ -20,10 +21,13 @@ public class App {
         StadiumService stadiumService = new StadiumService();
         TeamService teamService = new TeamService();
         PlayerService playerService = new PlayerService();
+        OutPlayerService outPlayerService = new OutPlayerService();
+
         Scanner sc = new Scanner(System.in);
         System.out.println("어떤 기능을 요청하시겠습니까?");
         String input = sc.nextLine();
 
+        // 목록보기
         if (input.startsWith("야구장목록")) {
             stadiumService.야구장목록();
         } else if (input.equals("팀목록")) {
@@ -34,6 +38,7 @@ public class App {
                 throw new RuntimeException(e);
             }
         }
+        // 야구장등록
         if (input.startsWith("야구장등록")) {
             String[] sParams = input.substring(input.indexOf('?') + 1).split("&");
             String name = null;
@@ -53,7 +58,7 @@ public class App {
                 throw new RuntimeException(e);
             }
         }
-
+        // 팀등록
         if (input.startsWith("팀등록")) {
             String[] tParams = input.substring(input.indexOf('?') + 1).split("&");
             Integer stadiumId = 0;
@@ -73,6 +78,7 @@ public class App {
 
             teamService.팀등록(stadiumId, name);
         }
+        // 선수등록
         if (input.startsWith("선수등록")) {
             String[] pParams = input.substring(input.indexOf('?') + 1).split("&");
             Integer teamId = 0;
@@ -94,10 +100,28 @@ public class App {
             }
 
             playerService.선수등록(teamId, name, position);
-        }
+      }
+        // 퇴출등록
+        if (input.startsWith("퇴출등록")) {
+            String[] tParams = input.substring(input.indexOf('?') + 1).split("&");
+            Integer playerId = 0;
+            String reason = null;
+
+            for (String param : tParams) {
+                String[] keyValue = param.split("=");
+                String key = keyValue[0];
+                String value = keyValue[1];
+
+                if (key.equals("playerId")) {
+                    playerId = Integer.parseInt(value);
+                } else if (key.equals("reason")) {
+                    reason = value;
+                }
+            }
+            outPlayerService.퇴출등록(playerId,reason);
 
     }
-}
+}}
 
 
 

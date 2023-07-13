@@ -23,8 +23,13 @@ public class PlayerDao {
             statement.setInt(1, teamId);
             statement.setString(2, player_name);
             statement.setString(3, playerPosition);
-            statement.executeUpdate();
-        }catch (Exception e){
+            int result = statement.executeUpdate();
+            if(result == 1){
+                System.out.println("성공");
+            }else{
+                System.out.println("실패");
+            }
+        }catch (SQLException e){
             e.printStackTrace();
         }
     }
@@ -36,6 +41,15 @@ public class PlayerDao {
             statement.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    // 플레이어 업데이트
+    public void updatePlayer(Integer playerId) throws SQLException {
+        String query = "UPDATE player_tb SET team_id = null WHERE player_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, playerId);
+            statement.executeUpdate();
         }
     }
 
