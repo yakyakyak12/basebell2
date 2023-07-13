@@ -1,4 +1,5 @@
 import Dao.TeamDao;
+import Service.PlayerService;
 import db.DBConnection;
 import dto.TeamRespDTO;
 import Service.StadiumService;
@@ -18,6 +19,7 @@ public class App {
         Connection connection = DBConnection.getInstance();
         StadiumService stadiumService = new StadiumService();
         TeamService teamService = new TeamService();
+        PlayerService playerService = new PlayerService();
         Scanner sc = new Scanner(System.in);
         System.out.println("어떤 기능을 요청하시겠습니까?");
         String input = sc.nextLine();
@@ -70,6 +72,28 @@ public class App {
             }
 
             teamService.팀등록(stadiumId, name);
+        }
+        if (input.startsWith("선수등록")) {
+            String[] pParams = input.substring(input.indexOf('?') + 1).split("&");
+            Integer teamId = 0;
+            String name = null;
+            String position = null;
+
+            for (String param : pParams) {
+                String[] keyValue = param.split("=");
+                String key = keyValue[0];
+                String value = keyValue[1];
+
+                if (key.equals("teamId")) {
+                    teamId = Integer.parseInt(value);
+                } else if (key.equals("name")) {
+                    name = value;
+                } else if (key.equals("position")) {
+                    position = value;
+                }
+            }
+
+            playerService.선수등록(teamId, name, position);
         }
 
     }
