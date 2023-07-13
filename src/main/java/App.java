@@ -46,6 +46,11 @@ public class App {
            playerService.선수목록(input);
         }
 
+        // 선수 퇴출 목록
+        if(input.startsWith("퇴출목록")){
+            playerService.선수목록(input);
+        }
+
 //         ==============================================================================
         // 야구장등록
         if (input.startsWith("야구장등록")) {
