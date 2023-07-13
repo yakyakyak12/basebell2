@@ -1,54 +1,84 @@
-import Dao.StadiumDao;
 import Dao.TeamDao;
-import Model.Stadium;
-import Model.Team;
-import Service.StadiumService;
-import Service.TeamService;
 import db.DBConnection;
 import dto.TeamRespDTO;
+import Service.StadiumService;
+import Service.TeamService;
+
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
+
+
+        Connection connection = DBConnection.getInstance();
+        StadiumService stadiumService = new StadiumService();
+        TeamService teamService = new TeamService();
         Scanner sc = new Scanner(System.in);
         System.out.println("어떤 기능을 요청하시겠습니까?");
         String input = sc.nextLine();
-        String[] response = new String[input.length()];
-        String[] rss = new String[input.length()];
-        //배열이 가변적일 거 같은데 리스트로 쓰면 복잡해서 일단 input.length로 설정해봄...
 
-        if(!input.contains("?")){
-            input = input;
-        } else if (input.contains("?")) {
-            response[0] = Arrays.toString(input.split("\\?"));
-            //response[0]은 사용자의 요구 ex) 야구장등록
-            rss = response[1].split("=");
-            //rss[홀수]는 사용자의 입력사항 ex) 야구장이름 = 잠실야구장
-
-        }
-        //이 코드를 도저히 깔끔하게 못 만들겠어가지고... 나중에 따로 설명드릴게요...ㅠ
-
-
-        try {
-            if (input.equals("팀목록")) {
+        if (input.startsWith("야구장목록")) {
+            stadiumService.야구장목록();
+        } else if (input.equals("팀목록")) {
+            try {
                 List<TeamRespDTO> dtos = TeamService.팀목록();
                 System.out.println(dtos);
-            } else if (response[0].equals("야구장등록")) {
-                StadiumService stadiumService = new StadiumService();
-                stadiumService.야구장등록(rss[1]);
-
-
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
+        }
+        if (input.startsWith("야구장등록")) {
+            String[] sParams = input.substring(input.indexOf('?') + 1).split("&");
+            String name = null;
+            for (String param : sParams) {
+                String[] keyValue = param.split("=");
+                String key = keyValue[0];
+                String value = keyValue[1];
 
-        }catch (Exception e) {
-            System.err.println("예외 발생: " + e.getMessage());
+                if (key.equals("name")) {
+                    name = value;
+
+                }
+            }
+            try {
+                stadiumService.야구장등록(name);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
 
+        if (input.startsWith("팀등록")) {
+            String[] tParams = input.substring(input.indexOf('?') + 1).split("&");
+            Integer stadiumId = 0;
+            String name = null;
+
+            for (String param : tParams) {
+                String[] keyValue = param.split("=");
+                String key = keyValue[0];
+                String value = keyValue[1];
+
+                if (key.equals("stadiumId")) {
+                    stadiumId = Integer.parseInt(value);
+                } else if (key.equals("name")) {
+                    name = value;
+                }
+            }
+
+            teamService.팀등록(stadiumId, name);
+        }
 
     }
 }
+
+
+
+
+
+
 
 

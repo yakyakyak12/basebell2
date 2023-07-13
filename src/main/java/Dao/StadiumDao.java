@@ -2,12 +2,12 @@ package Dao;
 
 
 import Model.Stadium;
-import Model.Team;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 //public class Stadium {
@@ -24,12 +24,17 @@ public class StadiumDao {
     }
 
     // 야구장 생성
-    public void createStadium(String stadiumName) throws SQLException {
+    public void createStadium(String stadiumName){
 
         String query = "INSERT INTO stadium_tb (stadium_name, stadium_created_at) VALUES (?, now())";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, stadiumName);
-            statement.executeUpdate();
+            int result = statement.executeUpdate();
+            if(result == 1){
+                System.out.println("성공");
+            }else{
+                System.out.println("실패");
+            }
         }catch (SQLException e){
             e.printStackTrace();
         }

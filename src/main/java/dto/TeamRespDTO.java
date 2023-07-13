@@ -1,6 +1,6 @@
 package dto;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Builder;
 
 import java.sql.Timestamp;
