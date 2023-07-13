@@ -19,15 +19,12 @@ public class StadiumService {
     }
 
     public void 야구장목록(){
-        Connection connection = DBConnection.getInstance();
         StadiumDao stadiumDao = new StadiumDao(connection);
-
         List<Stadium> stadiumList = stadiumDao.getAllStadiums();
         System.out.println(stadiumList);
     }
 
     public void 야구장등록(String stadiumName) throws SQLException {
-        Connection connection = DBConnection.getInstance();
         StadiumDao stadiumDao = new StadiumDao(connection);
         stadiumDao.createStadium(stadiumName);
 

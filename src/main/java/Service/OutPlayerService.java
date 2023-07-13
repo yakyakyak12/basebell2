@@ -29,8 +29,15 @@ public class OutPlayerService {
         System.out.println(outList);
     }
 
+    public void 퇴출등록(int playerId, String reason){
+        OutPlayerDao outPlayerDao = new OutPlayerDao(connection);
+        try {
+            outPlayerDao.createOutPlayer(playerId, reason);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
 
 
-}
+}}

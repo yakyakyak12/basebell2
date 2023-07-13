@@ -64,7 +64,7 @@ public class App {
             String name = body2[1].split("=")[1];
             String position = body2[2].split("=")[1];
 
-            //playerService.선수등록();
+            playerService.선수등록(teamId, name, position);
 
         } else if (path.equals("선수목록")) {
             int teamId = Integer.parseInt(body.split("=")[1]);
@@ -80,7 +80,7 @@ public class App {
 
             outPlayerService.퇴출목록();
         } else if (path.equals("포지션별목록")) {
-            //playerService.포지션별목록();
+            playerService.포지션별목록();
         }
 
 

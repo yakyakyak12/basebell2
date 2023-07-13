@@ -41,9 +41,7 @@ public class OutPlayerDao {
         }
     }
 
-    public void find_test(){
-        String sql = "select * from out_player_tb";
-    }
+
 
     public List<OutPlayer> findAll() {
         List<OutPlayer> outPlayerList = new ArrayList<>();
