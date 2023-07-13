@@ -12,6 +12,12 @@ import java.util.List;
 //구현해야할 기능 1. 야구장 등록 2. 전체 야구장 목록 보기
 public class StadiumService {
 
+
+    private Connection connection;
+    public StadiumService(Connection connection) {
+        this.connection = connection;
+    }
+
     public void 야구장목록(){
         Connection connection = DBConnection.getInstance();
         StadiumDao stadiumDao = new StadiumDao(connection);

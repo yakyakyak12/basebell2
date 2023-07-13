@@ -1,4 +1,7 @@
 import Dao.TeamDao;
+import Model.Team;
+import Service.OutPlayerService;
+import Service.PlayerService;
 import db.DBConnection;
 import dto.TeamRespDTO;
 import Service.StadiumService;
@@ -12,73 +15,63 @@ import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
-
-        Connection connection = DBConnection.getInstance();
-        StadiumService stadiumService = new StadiumService();
-        TeamService teamService = new TeamService();
         Scanner sc = new Scanner(System.in);
         System.out.println("어떤 기능을 요청하시겠습니까?");
-        String input = sc.nextLine();
 
-        if (input.startsWith("야구장목록")) {
+
+        //0. 모든 객체 만들기
+        Connection connection = DBConnection.getInstance();
+        StadiumService stadiumService = new StadiumService(connection);
+        TeamService teamService = new TeamService(connection);
+        PlayerService playerService = new PlayerService(connection);
+        OutPlayerService outPlayerService = new OutPlayerService(connection);
+
+
+
+        //1. 파싱
+        String[] input = sc.nextLine().split("//?");
+        String path = input[0];
+        String body = input[1];
+
+        if(path.equals("야구장등록")){
+            String name = body.split("=")[1];
+            stadiumService.야구장등록(name);
+        } else if (path.equals("야구장목록")) {
             stadiumService.야구장목록();
-        } else if (input.equals("팀목록")) {
-            try {
-                List<TeamRespDTO> dtos = TeamService.팀목록();
-                System.out.println(dtos);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        if (input.startsWith("야구장등록")) {
-            String[] sParams = input.substring(input.indexOf('?') + 1).split("&");
-            String name = null;
-            for (String param : sParams) {
-                String[] keyValue = param.split("=");
-                String key = keyValue[0];
-                String value = keyValue[1];
-
-                if (key.equals("name")) {
-                    name = value;
-
-                }
-            }
-            try {
-                stadiumService.야구장등록(name);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        if (input.startsWith("팀등록")) {
-            String[] tParams = input.substring(input.indexOf('?') + 1).split("&");
-            Integer stadiumId = 0;
-            String name = null;
-
-            for (String param : tParams) {
-                String[] keyValue = param.split("=");
-                String key = keyValue[0];
-                String value = keyValue[1];
-
-                if (key.equals("stadiumId")) {
-                    stadiumId = Integer.parseInt(value);
-                } else if (key.equals("name")) {
-                    name = value;
-                }
-            }
+        } else if (path.equals("팀등록")) {
+            String[] body2 = body.split("&");
+            int stadiumId = Integer.parseInt(body2[0].split("=")[1]);
+            String name = body2[1].split("=")[1];
 
             teamService.팀등록(stadiumId, name);
+        } else if (path.equals("팀목록")) {
+            teamService.팀목록();
+            
+        } else if (path.equals("선수등록")) {
+            String[] body2 = body.split("&");
+            int teamId = Integer.parseInt(body2[0].split("=")[1]);
+            String name = body2[1].split("=")[1];
+            String position = body2[2].split("=")[1];
+
+            //playerService.선수등록();
+
+        } else if (path.equals("선수목록")) {
+            int teamId = Integer.parseInt(body.split("=")[1]);
+
+            //playerService.선수목록(teamId);
+        } else if (path.equals("퇴출등록")) {
+            String[] body2 = body.split("&");
+            int playerId = Integer.parseInt(body2[0].split("=")[1]);
+            String reason = body2[1].split("=")[1];
+
+            //outPlayerService.퇴출등록(playerId, reason);
+        } else if (path.equals("퇴출목록")) {
+            //OutPlayerService.퇴출목록();
+        } else if (path.equals("포지션별목록")) {
+            //playerService.포지션별목록();
         }
 
-    }
-}
 
-
-
-
-
-
-
-
+    }}

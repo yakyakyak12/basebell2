@@ -1,6 +1,7 @@
 package Dao;
 
 import Model.Team;
+import dto.TeamRespDTO;
 import lombok.Getter;
 
 import java.sql.*;
@@ -78,6 +79,30 @@ public class TeamDao {
             statement.setString(1, teamName);
             statement.executeUpdate();
         }
+    }
+
+    //팀 전체 목록 조회
+    public List<TeamRespDTO> findAll() throws SQLException {
+        List<TeamRespDTO> dtos = new ArrayList<>();
+        String sql = "select *\n" +
+                "from team_tb tt \n" +
+                "inner join stadium_tb st on tt.stadium_id = st.stadium_id \n";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try(ResultSet rs = statement.executeQuery()){
+                while (rs.next()) {
+                    TeamRespDTO dto = TeamRespDTO.builder()
+                            .teamId(rs.getInt("team_id"))
+                            .teamName(rs.getString("team_name"))
+                            .teamCreatedAt(rs.getTimestamp("team_created_at"))
+                            .sId(rs.getInt("stadium_id"))
+                            .sName(rs.getString("stadium_name"))
+                            .sCreatedAt(rs.getTimestamp("stadium_created_at"))
+                            .build();
+                    dtos.add(dto);
+                }
+            }
+        }
+        return dtos;
     }
 
     private Team buildTeamFromResultSet(ResultSet resultSet) throws SQLException {
