@@ -16,7 +16,7 @@ public class Player {
     private Timestamp playerCreatedAt;
 
     @Builder
-    public Player(Integer playerId, Integer teamId, String playerName, String playerPosition, Timestamp playerCreatedAt) {
+    public Player(Integer playerId, String playerName, String playerPosition, Timestamp playerCreatedAt) {
         this.playerId = playerId;
         this.teamId = teamId;
         this.playerName = playerName;

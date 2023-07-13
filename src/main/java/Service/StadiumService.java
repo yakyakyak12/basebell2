@@ -20,10 +20,27 @@ public class StadiumService {
         System.out.println(stadiumList);
     }
 
-    public void 야구장등록(String stadiumName) throws SQLException {
+    public void 야구장등록(String input) throws SQLException {
         Connection connection = DBConnection.getInstance();
         StadiumDao stadiumDao = new StadiumDao(connection);
-        stadiumDao.createStadium(stadiumName);
+
+        String[] sParams = input.substring(input.indexOf('?') + 1).split("&");
+            String name = null;
+            for (String param : sParams) {
+                String[] keyValue = param.split("=");
+                String key = keyValue[0];
+                String value = keyValue[1];
+
+                if (key.equals("name")) {
+                    name = value;
+                }
+            }
+            try {
+                stadiumDao.createStadium(name);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
 
     }
 }

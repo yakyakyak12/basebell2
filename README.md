@@ -13,7 +13,7 @@ drop table team_tb;
 drop table player_tb;
 drop table out_player_tb;
 
-CREATE TABLE stadium_tb(
+[CREATE TABLE stadium_tb(
 stadium_id int auto_increment primary key,
 stadium_name varchar(100),
 stadium_created_at timestamp not null
@@ -44,7 +44,7 @@ out_player_reason varchar(100),
 out_player_created_at timestamp not null,
 FOREIGN KEY (player_id) REFERENCES player_tb(player_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+]()
 -- 데이터 더미
 insert into stadium_tb(stadium_name, stadium_created_at) values('대구 삼성 라이온즈 파크', now());
 insert into stadium_tb(stadium_name, stadium_created_at) values('사직 야구장', now());

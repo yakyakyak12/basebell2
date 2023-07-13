@@ -16,20 +16,23 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) {
 
-
+        // 생성자
         Connection connection = DBConnection.getInstance();
         StadiumService stadiumService = new StadiumService();
         TeamService teamService = new TeamService();
         PlayerService playerService = new PlayerService();
         OutPlayerService outPlayerService = new OutPlayerService();
 
+        // 사용자로부터 입력 받고 값을 담음
         Scanner sc = new Scanner(System.in);
         System.out.println("어떤 기능을 요청하시겠습니까?");
         String input = sc.nextLine();
 
+
         // 목록보기
         if (input.startsWith("야구장목록")) {
             stadiumService.야구장목록();
+
         } else if (input.equals("팀목록")) {
             try {
                 List<TeamRespDTO> dtos = TeamService.팀목록();
@@ -38,87 +41,31 @@ public class App {
                 throw new RuntimeException(e);
             }
         }
+
+        if(input.startsWith("선수목록")){
+           playerService.선수목록(input);
+        }
+
+//         ==============================================================================
         // 야구장등록
         if (input.startsWith("야구장등록")) {
-            String[] sParams = input.substring(input.indexOf('?') + 1).split("&");
-            String name = null;
-            for (String param : sParams) {
-                String[] keyValue = param.split("=");
-                String key = keyValue[0];
-                String value = keyValue[1];
-
-                if (key.equals("name")) {
-                    name = value;
-
-                }
-            }
             try {
-                stadiumService.야구장등록(name);
+                stadiumService.야구장등록(input);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
         // 팀등록
         if (input.startsWith("팀등록")) {
-            String[] tParams = input.substring(input.indexOf('?') + 1).split("&");
-            Integer stadiumId = 0;
-            String name = null;
-
-            for (String param : tParams) {
-                String[] keyValue = param.split("=");
-                String key = keyValue[0];
-                String value = keyValue[1];
-
-                if (key.equals("stadiumId")) {
-                    stadiumId = Integer.parseInt(value);
-                } else if (key.equals("name")) {
-                    name = value;
-                }
-            }
-
-            teamService.팀등록(stadiumId, name);
+            teamService.팀등록(input);
         }
         // 선수등록
         if (input.startsWith("선수등록")) {
-            String[] pParams = input.substring(input.indexOf('?') + 1).split("&");
-            Integer teamId = 0;
-            String name = null;
-            String position = null;
-
-            for (String param : pParams) {
-                String[] keyValue = param.split("=");
-                String key = keyValue[0];
-                String value = keyValue[1];
-
-                if (key.equals("teamId")) {
-                    teamId = Integer.parseInt(value);
-                } else if (key.equals("name")) {
-                    name = value;
-                } else if (key.equals("position")) {
-                    position = value;
-                }
-            }
-
-            playerService.선수등록(teamId, name, position);
+            playerService.선수등록(input);
       }
         // 퇴출등록
         if (input.startsWith("퇴출등록")) {
-            String[] tParams = input.substring(input.indexOf('?') + 1).split("&");
-            Integer playerId = 0;
-            String reason = null;
-
-            for (String param : tParams) {
-                String[] keyValue = param.split("=");
-                String key = keyValue[0];
-                String value = keyValue[1];
-
-                if (key.equals("playerId")) {
-                    playerId = Integer.parseInt(value);
-                } else if (key.equals("reason")) {
-                    reason = value;
-                }
-            }
-            outPlayerService.퇴출등록(playerId,reason);
+            outPlayerService.퇴출등록(input);
 
     }
 }}

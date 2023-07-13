@@ -16,16 +16,37 @@ import java.util.List;
 //구현해야할 기능 1. 팀 등록 2. 전체 팀 목록
 public class TeamService {
 
-    public void 팀등록(Integer stadiumId, String teamName){
+
+
+    public void 팀등록(String input){
         Connection connection = DBConnection.getInstance();
         TeamDao teamDao = new TeamDao(connection);
+        String[] tParams = input.substring(input.indexOf('?') + 1).split("&");
+        Integer stadiumId = 0;
+        String name = null;
+
+        for (String param : tParams) {
+            String[] keyValue = param.split("=");
+            String key = keyValue[0];
+            String value = keyValue[1];
+
+            if (key.equals("stadiumId")) {
+                stadiumId = Integer.parseInt(value);
+            } else if (key.equals("name")) {
+                name = value;
+            }
+        }
         try {
-            teamDao.createTeam(stadiumId, teamName);
+        teamDao.createTeam(stadiumId, name);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
+
+
+
+
     public static List<TeamRespDTO> 팀목록() throws SQLException {
         Connection connection = DBConnection.getInstance();
         List<TeamRespDTO> dtos = new ArrayList<>();

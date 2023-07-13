@@ -54,25 +54,29 @@ public class PlayerDao {
     }
 
     // 선수 명단 조회
-    public List<Player> findAll(){
+    public List<Player> findAll(Integer stadiumId){
         List<Player> playerList = new ArrayList<>();
-        String sql = "select * from player_tb order by team_id asc;";
+        String sql = "select player_id, player_name, player_position, player_created_at from player_tb where team_id = ? order by player_id asc;";
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, stadiumId);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()){
                 Player player = new Player(
                         rs.getInt("player_id"),
-                        rs.getInt("team_id"),
                         rs.getString("player_name"),
                         rs.getString("player_position"),
                         rs.getTimestamp("player_created_at")
-
                 );
                 playerList.add(player);
+                System.out.println("=======================");
+                System.out.println("Player ID: " + player.getPlayerId());
+                System.out.println("Player Name: " + player.getPlayerName());
+                System.out.println("Player Position: " + player.getPlayerPosition());
+                System.out.println("Player Created At: " + player.getPlayerCreatedAt());
 
             }
-            System.out.println(playerList);
+
         }catch (Exception e){
             e.printStackTrace();
         }
