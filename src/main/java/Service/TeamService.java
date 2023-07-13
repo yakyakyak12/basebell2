@@ -1,6 +1,7 @@
 package Service;
 
 import Dao.TeamDao;
+import Model.Stadium;
 import db.DBConnection;
 import lombok.AllArgsConstructor;
 import dto.TeamRespDTO;
@@ -35,8 +36,10 @@ public class TeamService {
 
     }
 
-    public List<TeamRespDTO> 팀목록() throws SQLException {
-        return teamDao.findAll();
+    public void 팀목록() throws SQLException {
+        List<TeamRespDTO> teamList = teamDao.findAll();
+        System.out.println(teamList);
+
     }
 }
 

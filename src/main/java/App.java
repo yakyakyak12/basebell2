@@ -21,6 +21,7 @@ public class App {
         System.out.println("어떤 기능을 요청하시겠습니까?");
 
 
+
         //0. 모든 객체 만들기
         Connection connection = DBConnection.getInstance();
         StadiumService stadiumService = new StadiumService(connection);
@@ -31,9 +32,17 @@ public class App {
 
 
         //1. 파싱
-        String[] input = sc.nextLine().split("//?");
-        String path = input[0];
-        String body = input[1];
+        String input = sc.nextLine();
+        String path = "";
+        String body = "";
+
+        if(!input.contains("?")){
+            path = input;
+        } else if(input.contains("?")){
+            path = input.split("\\?")[0];
+            body = input.split("\\?")[1];
+
+        }
 
         if(path.equals("야구장등록")){
             String name = body.split("=")[1];
@@ -68,7 +77,8 @@ public class App {
 
             //outPlayerService.퇴출등록(playerId, reason);
         } else if (path.equals("퇴출목록")) {
-            //OutPlayerService.퇴출목록();
+
+            outPlayerService.퇴출목록();
         } else if (path.equals("포지션별목록")) {
             //playerService.포지션별목록();
         }

@@ -21,4 +21,5 @@ public class OutPlayer {
         this.outCreatedAt = outPlayerCreatedAt;
     }
 
+
 }
