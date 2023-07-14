@@ -26,7 +26,14 @@ public class PlayerDao {
             statement.setInt(1, teamId);
             statement.setString(2, player_name);
             statement.setString(3, playerPosition);
+            int result = statement.executeUpdate();
+            if(result == 1){
+                System.out.println("성공");
+            }else{
+                System.out.println("실패");
+            }
             statement.executeUpdate();
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -68,29 +75,21 @@ public class PlayerDao {
 //                    dtos.add(dto);
 //                }
 //            }
-    public List<Player> findAll(Integer stadiumId){
+    public List<Player> findAll(int teamId){
         List<Player> playerList = new ArrayList<>();
         String sql = "select player_id, player_name, player_position, player_created_at from player_tb where team_id = ? order by player_id asc;";
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, stadiumId);
             ResultSet rs = pstmt.executeQuery();
+            int team_id = 0;
+            pstmt.setInt(1, team_id);
             while (rs.next()){
-                Player player = new Player(
-
-                        rs.getInt("player_id"),
-                        rs.getInt("team_id"),
-                        rs.getString("player_name"),
-                        rs.getString("player_position"),
-                        rs.getTimestamp("player_created_at")
-                );
-                playerList.add(player);
-                System.out.println("=======================");
-                System.out.println("Player ID: " + player.getPlayerId());
-                System.out.println("Player Name: " + player.getPlayerName());
-                System.out.println("Player Position: " + player.getPlayerPosition());
-                System.out.println("Player Created At: " + player.getPlayerCreatedAt());
-
+                Player dto = Player.builder()
+                        .playerId(rs.getInt("player_id"))
+                        .playerName(rs.getString("player_name"))
+                        .playerPosition(rs.getString("player_position"))
+                        .playerCreatedAt(rs.getTimestamp("player_created_at"))
+                        .build();
             }
 
         }catch (Exception e){

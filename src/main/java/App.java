@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    public static void main(String[] args) throws SQLException {
+    public static void  main(String[] args) throws SQLException {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("어떤 기능을 요청하시겠습니까?");
@@ -69,13 +69,13 @@ public class App {
         } else if (path.equals("선수목록")) {
             int teamId = Integer.parseInt(body.split("=")[1]);
 
-            //playerService.선수목록(teamId);
+            playerService.선수목록(teamId);
         } else if (path.equals("퇴출등록")) {
             String[] body2 = body.split("&");
             int playerId = Integer.parseInt(body2[0].split("=")[1]);
             String reason = body2[1].split("=")[1];
 
-            //outPlayerService.퇴출등록(playerId, reason);
+            outPlayerService.퇴출등록(playerId, reason);
         } else if (path.equals("퇴출목록")) {
 
             outPlayerService.퇴출목록();

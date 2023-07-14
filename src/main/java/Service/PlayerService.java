@@ -22,6 +22,10 @@ public class PlayerService {
         PlayerDao playerDao = new PlayerDao(connection);
         playerDao.createPlayer(teamId, name, position);
     }
+    public void 선수목록(int teamId) {
+        PlayerDao playerDao = new PlayerDao(connection);
+        playerDao.findAll(teamId);
+    }
 
         public void 포지션별목록() throws SQLException {
         PlayerDao playerDao = new PlayerDao(connection);

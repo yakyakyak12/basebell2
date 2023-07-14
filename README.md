@@ -1,18 +1,5 @@
-create database metadb;
-use metadb;
 
--- 테이블 확인
-select * from stadium_tb;
-select * from team_tb;
-select * from player_tb;
-select * from out_player_tb;
-
--- 테이블 삭제
-drop table stadium_tb;
-drop table team_tb;
-drop table player_tb;
-drop table out_player_tb;
-
+-- 테이블 생성 
 CREATE TABLE stadium_tb(
 stadium_id int auto_increment primary key,
 stadium_name varchar(100),

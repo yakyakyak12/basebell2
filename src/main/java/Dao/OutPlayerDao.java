@@ -24,6 +24,12 @@ public class OutPlayerDao {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, playerId);
             statement.setString(2, outPlayerReason);
+            int result = statement.executeUpdate();
+            if(result == 1){
+                System.out.println("성공");
+            }else{
+                System.out.println("실패");
+            }
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
