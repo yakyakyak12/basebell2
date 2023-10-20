@@ -15,9 +15,9 @@
 
 ## 사용한 기술
 
-# 기술 스택
+### 기술 스택
 - JDK 11 
 - MySQL 8.0
-# 의존성
+### 의존성
 - lombok
 - MySQL connector
